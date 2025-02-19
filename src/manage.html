@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Players</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Manage Players</h1>
+        <div class="player-list">
+            <h2>Players</h2>
+            <ul id="player-list">
+                <!-- Player entries will be dynamically added here -->
+            </ul>
+        </div>
+        <div class="add-player">
+            <h2>Add Player</h2>
+            <input type="text" id="new-player-name" placeholder="Enter name">
+            <input type="number" id="new-player-score" placeholder="Enter score" min="0">
+            <button id="add-player-btn">Add Player</button>
+        </div>
+    </div>
+    <script src="js/manage.js"></script>
+</body>
+</html>

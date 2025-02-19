@@ -52,12 +52,12 @@ h2 {
     background-color: #f1f1f1;
 }
 
-#leaderboard-list {
+#leaderboard-list, #player-list {
     list-style-type: none;
     padding: 0;
 }
 
-.leaderboard-item {
+.leaderboard-item, .player-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -142,7 +142,7 @@ h2 {
         padding: 10px;
     }
 
-    .leaderboard-item {
+    .leaderboard-item, .player-item {
         flex-direction: column;
         align-items: center;
     }

@@ -3,16 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birthday Leaderboard</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>Birthday Website</title>
+    <link rel="stylesheet" href="./css/styles.css">
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAKLmp6UlysgnFfhJGUTLSCj_RKNO98l0c",
+            authDomain: "games-ca1ed.firebaseapp.com",
+            projectId: "games-ca1ed",
+            storageBucket: "games-ca1ed.firebasestorage.app",
+            messagingSenderId: "137391980062",
+            appId: "1:137391980062:web:3051b2e2c6e32de458780f"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let players = [];
+
+        async function fetchPlayers() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "Player"));
+                players = querySnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    name: doc.data().Name,
+                    score: doc.data().Score || 0
+                }));
+                console.log("Players fetched from Firestore:", players);
+                updateLeaderboard();
+            } catch (error) {
+                console.error("Error fetching players from Firestore:", error);
+            }
+        }
+
+        function updateLeaderboard() {
+            const leaderboardList = document.getElementById('playerLeaderboard');
+            if (!leaderboardList) {
+                console.error("Leaderboard element not found!");
+                return;
+            }
+            leaderboardList.innerHTML = '';
+            players.sort((a, b) => b.score - a.score);
+
+            players.forEach((player, index) => {
+                const listItem = document.createElement('li');
+                listItem.classList.add('leaderboard-item');
+                if (index === 0) {
+                    listItem.classList.add('first-place');
+                }
+                listItem.innerHTML = `
+                    <div class="rank">
+                        ${index === 0 ? '<img src="images/crown.png" alt="Crown" class="crown">' : ''}
+                        <h3>${index + 1}</h3>
+                    </div>
+                    <h3 class="name">${player.name}</h3>
+                    <span class="score">${player.score}</span>
+                `;
+                leaderboardList.appendChild(listItem);
+            });
+        }
+
+        // Initial leaderboard update
+        fetchPlayers();
+
+        // Fetch players every 15 seconds
+        setInterval(fetchPlayers, 15000);
+    </script>
 </head>
 <body>
-    <div class="container">
-        <h1>Leaderboard</h1>
-        <ul id="leaderboard-list">
-            <!-- Leaderboard entries will be dynamically added here -->
-        </ul>
+    <h1>Leaderboard</h1>
+    <div id="leaderboard">
+        <ul id="playerLeaderboard"></ul>
     </div>
-    <script src="js/scripts.js"></script>
 </body>
 </html>

@@ -52,7 +52,7 @@
                 listItem.classList.add('player-item');
                 listItem.innerHTML = `
                     <span>${player.name}</span>
-                    <span class="previous-score">Current: ${player.score}</span>
+                    <span class="previous-score"><strong>${player.score}</strong></span>
                     <div class="score-controls">
                         <input type="number" value="${player.addScore}" data-id="${player.id}" class="score-input">
                         <button data-id="${player.id}" class="increase-btn">+</button>

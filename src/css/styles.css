@@ -295,6 +295,7 @@ h3 {
     border-radius: 5px;
     padding: 10px;
     cursor: pointer;
+    width: 80px; /* Set a smaller width */
 }
 
 .delete-btn:hover {

@@ -99,19 +99,6 @@ h3 {
     box-sizing: border-box;
 }
 
-.leaderboard-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    margin: 10px 0;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    width: 100%;
-    box-sizing: border-box;
-}
-
 .first-place {
     background-color: #AD8A56;
     color: black;
@@ -150,6 +137,7 @@ h3 {
     padding: 5px 0;
     font-size: 16px;
 }
+
 .rank {
     display: flex;
     align-items: center;
@@ -161,7 +149,7 @@ h3 {
     width: 32px;
     height: 32px;
     margin-right: 10px;
-    }
+}
 
 .position-change-icon {
     width: 20px; /* Set width to 20px */
@@ -320,7 +308,7 @@ h3 {
     }
 
     .leaderboard-item, .player-item {
-        flex-direction: column;
+        flex-direction: row; /* Ensure horizontal layout */
         align-items: center;
     }
 

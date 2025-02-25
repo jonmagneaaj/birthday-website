@@ -130,6 +130,26 @@ h3 {
     text-shadow: 1px 1px 2px white;
 }
 
+.player-text-container {
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 20px auto;
+    max-width: 600px;
+    text-align: center;
+}
+
+.player-text-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    word-break: break-word; /* Allow long names to break into multiple lines */
+}
+
+.player-text-list li {
+    padding: 5px 0;
+    font-size: 16px;
+}
 .rank {
     display: flex;
     align-items: center;

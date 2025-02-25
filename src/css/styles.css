@@ -99,22 +99,29 @@ h3 {
     box-sizing: border-box;
 }
 
+.leaderboard-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
 .first-place {
     background-color: #AD8A56;
-    color: black;
-    text-shadow: 1px 1px 2px white;
+    color: white;
+    text-shadow: 1px 1px 2px black;
 }
 
 .second-place {
-    background-color: #B4B4B4;
-    color: black;
-    text-shadow: 1px 1px 2px white;
-}
-
-.third-place {
-    background-color: #8a5118; /* Bronze color */
-    color: black;
-    text-shadow: 1px 1px 2px white;
+    background-color: rgb(126, 126, 126);
+    color: white;
+    text-shadow: 1px 1px 2px black;
 }
 
 .player-text-container {

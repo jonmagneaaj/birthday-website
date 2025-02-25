@@ -50,18 +50,35 @@
                 listItem.classList.add('player-item');
                 listItem.innerHTML = `
                     <span>${player.name}</span>
-                    <input type="number" value="${player.score}" min="0" data-id="${player.id}" class="score-input">
+                    <div class="score-controls">
+                        <button data-id="${player.id}" class="decrease-btn">-</button>
+                        <input type="number" value="${player.score}" min="0" data-id="${player.id}" class="score-input" readonly>
+                        <button data-id="${player.id}" class="increase-btn">+</button>
+                    </div>
                     <button data-id="${player.id}" class="delete-btn">Delete</button>
                 `;
                 playerList.appendChild(listItem);
             });
 
-            document.querySelectorAll('.score-input').forEach(input => {
-                input.addEventListener('change', async (event) => {
+            document.querySelectorAll('.increase-btn').forEach(button => {
+                button.addEventListener('click', async (event) => {
                     const playerId = event.target.getAttribute('data-id');
-                    const newScore = parseInt(event.target.value);
-                    await updateDoc(doc(db, "Player", playerId), { Score: newScore });
+                    const player = players.find(p => p.id === playerId);
+                    player.score += 1;
+                    await updateDoc(doc(db, "Player", playerId), { Score: player.score });
                     fetchPlayers();
+                });
+            });
+
+            document.querySelectorAll('.decrease-btn').forEach(button => {
+                button.addEventListener('click', async (event) => {
+                    const playerId = event.target.getAttribute('data-id');
+                    const player = players.find(p => p.id === playerId);
+                    if (player.score > 0) {
+                        player.score -= 1;
+                        await updateDoc(doc(db, "Player", playerId), { Score: player.score });
+                        fetchPlayers();
+                    }
                 });
             });
 
@@ -95,9 +112,11 @@
     <h1>Manage Players</h1>
     <div id="player-management">
         <h2>Add New Player</h2>
-        <input type="text" id="new-player-name" placeholder="Name">
-        <input type="number" id="new-player-score" placeholder="Score">
-        <button id="add-player-btn">Add Player</button>
+        <div class="add-player">
+            <input type="text" id="new-player-name" placeholder="Name">
+            <input type="number" id="new-player-score" placeholder="Score">
+            <button id="add-player-btn">Add Player</button>
+        </div>
         
         <h2>Update Player Scores</h2>
         <ul id="player-list"></ul>

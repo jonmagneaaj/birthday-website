@@ -32,7 +32,8 @@
                 players = querySnapshot.docs.map(doc => ({
                     id: doc.id,
                     name: doc.data().Name,
-                    score: doc.data().Score || 0
+                    score: doc.data().Score || 0,
+                    addScore: 0 // Track add or subtract score separately
                 }));
                 console.log("Players fetched from Firestore:", players);
                 updatePlayerList();
@@ -50,9 +51,10 @@
                 listItem.classList.add('player-item');
                 listItem.innerHTML = `
                     <span>${player.name}</span>
+                    <span class="previous-score">Current: ${player.score}</span>
                     <div class="score-controls">
                         <button data-id="${player.id}" class="decrease-btn">-</button>
-                        <input type="number" value="${player.score}" min="0" data-id="${player.id}" class="score-input" readonly>
+                        <input type="number" value="${player.addScore}" data-id="${player.id}" class="score-input">
                         <button data-id="${player.id}" class="increase-btn">+</button>
                     </div>
                     <button data-id="${player.id}" class="delete-btn">Delete</button>
@@ -61,32 +63,31 @@
             });
 
             document.querySelectorAll('.increase-btn').forEach(button => {
-                button.addEventListener('click', async (event) => {
+                button.addEventListener('click', (event) => {
                     const playerId = event.target.getAttribute('data-id');
                     const player = players.find(p => p.id === playerId);
-                    player.score += 1;
-                    await updateDoc(doc(db, "Player", playerId), { Score: player.score });
-                    fetchPlayers();
+                    player.addScore += 1;
+                    updatePlayerList();
                 });
             });
 
             document.querySelectorAll('.decrease-btn').forEach(button => {
-                button.addEventListener('click', async (event) => {
+                button.addEventListener('click', (event) => {
                     const playerId = event.target.getAttribute('data-id');
                     const player = players.find(p => p.id === playerId);
-                    if (player.score > 0) {
-                        player.score -= 1;
-                        await updateDoc(doc(db, "Player", playerId), { Score: player.score });
-                        fetchPlayers();
-                    }
+                    player.addScore -= 1;
+                    updatePlayerList();
                 });
             });
 
             document.querySelectorAll('.delete-btn').forEach(button => {
                 button.addEventListener('click', async (event) => {
                     const playerId = event.target.getAttribute('data-id');
-                    await deleteDoc(doc(db, "Player", playerId));
-                    fetchPlayers();
+                    const confirmDelete = confirm("Are you sure you want to delete this player?");
+                    if (confirmDelete) {
+                        await deleteDoc(doc(db, "Player", playerId));
+                        fetchPlayers();
+                    }
                 });
             });
         }
@@ -100,8 +101,21 @@
                     Name: nameInput,
                     Score: scoreInput
                 });
+                document.getElementById('new-player-name').value = '';
+                document.getElementById('new-player-score').value = '';
                 fetchPlayers();
             }
+        });
+
+        document.getElementById('update-scores-btn').addEventListener('click', async () => {
+            for (const player of players) {
+                if (player.addScore !== 0) {
+                    player.score += player.addScore;
+                    await updateDoc(doc(db, "Player", player.id), { Score: player.score });
+                    player.addScore = 0; // Reset addScore after updating
+                }
+            }
+            fetchPlayers();
         });
 
         // Initial player list update
@@ -120,6 +134,7 @@
         
         <h2>Update Player Scores</h2>
         <ul id="player-list"></ul>
+        <button id="update-scores-btn">Update Scores</button>
     </div>
 </body>
 </html>

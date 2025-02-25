@@ -8,7 +8,7 @@
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -25,6 +25,8 @@
         const db = getFirestore(app);
 
         let players = [];
+        let previousPositions = {};
+        let currentPositions = {};
 
         async function fetchPlayers() {
             try {
@@ -32,10 +34,13 @@
                 players = querySnapshot.docs.map(doc => ({
                     id: doc.id,
                     name: doc.data().Name,
-                    score: doc.data().Score || 0
+                    score: doc.data().Score || 0,
+                    changed: doc.data().Changed || false
                 }));
                 console.log("Players fetched from Firestore:", players);
-                updateLeaderboard();
+                if (players.some(player => player.changed) || Object.keys(currentPositions).length === 0) {
+                    updateLeaderboard();
+                }
             } catch (error) {
                 console.error("Error fetching players from Firestore:", error);
             }
@@ -55,16 +60,42 @@
                 listItem.classList.add('leaderboard-item');
                 if (index === 0) {
                     listItem.classList.add('first-place');
+                } else if (index === 1) {
+                    listItem.classList.add('second-place');
+                } else if (index === 2) {
+                    listItem.classList.add('third-place');
                 }
+
+                let positionChangeIcon = '';
+                if (currentPositions[player.id] !== undefined) {
+                    if (currentPositions[player.id] > index) {
+                        positionChangeIcon = '<img src="images/up-arrow.png" alt="Up" class="position-change-icon">';
+                    } else if (currentPositions[player.id] < index) {
+                        positionChangeIcon = '<img src="images/down-arrow.png" alt="Down" class="position-change-icon">';
+                    } else {
+                        positionChangeIcon = '<img src="images/neutral-icon.png" alt="Neutral" class="position-change-icon">';
+                    }
+                }
+
                 listItem.innerHTML = `
                     <div class="rank">
                         ${index === 0 ? '<img src="images/crown.png" alt="Crown" class="crown">' : ''}
                         <h3>${index + 1}</h3>
+                        ${positionChangeIcon}
                     </div>
                     <h2 class="name">${player.name}</h2>
-                    <h3 class="score">Poeng: ${player.score}</h3>
+                    <h3 class="score">p: ${player.score}</h3>
                 `;
                 leaderboardList.appendChild(listItem);
+
+                // Update previous positions
+                previousPositions[player.id] = currentPositions[player.id];
+                currentPositions[player.id] = index;
+
+                // Reset the Changed field to false
+                if (player.changed) {
+                    updateDoc(doc(db, "Player", player.id), { Changed: false });
+                }
             });
         }
 

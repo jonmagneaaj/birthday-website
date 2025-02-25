@@ -53,13 +53,21 @@
                     <span>${player.name}</span>
                     <span class="previous-score">Current: ${player.score}</span>
                     <div class="score-controls">
-                        <button data-id="${player.id}" class="decrease-btn">-</button>
                         <input type="number" value="${player.addScore}" data-id="${player.id}" class="score-input">
                         <button data-id="${player.id}" class="increase-btn">+</button>
+                        <button data-id="${player.id}" class="decrease-btn">-</button>
                     </div>
                     <button data-id="${player.id}" class="delete-btn">Delete</button>
                 `;
                 playerList.appendChild(listItem);
+            });
+
+            document.querySelectorAll('.score-input').forEach(input => {
+                input.addEventListener('change', (event) => {
+                    const playerId = event.target.getAttribute('data-id');
+                    const player = players.find(p => p.id === playerId);
+                    player.addScore = parseInt(event.target.value) || 0;
+                });
             });
 
             document.querySelectorAll('.increase-btn').forEach(button => {
@@ -99,7 +107,8 @@
             if (nameInput && !isNaN(scoreInput)) {
                 await addDoc(collection(db, "Player"), {
                     Name: nameInput,
-                    Score: scoreInput
+                    Score: scoreInput,
+                    Changed: true
                 });
                 document.getElementById('new-player-name').value = '';
                 document.getElementById('new-player-score').value = '';
@@ -111,7 +120,7 @@
             for (const player of players) {
                 if (player.addScore !== 0) {
                     player.score += player.addScore;
-                    await updateDoc(doc(db, "Player", player.id), { Score: player.score });
+                    await updateDoc(doc(db, "Player", player.id), { Score: player.score, Changed: true });
                     player.addScore = 0; // Reset addScore after updating
                 }
             }

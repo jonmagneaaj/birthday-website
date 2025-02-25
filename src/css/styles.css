@@ -96,6 +96,38 @@ h3 {
     border-radius: 5px;
     width: 100%;
     max-width: 500px;
+    box-sizing: border-box;
+}
+
+.leaderboard-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.first-place {
+    background-color: #AD8A56;
+    color: black;
+    text-shadow: 1px 1px 2px white;
+}
+
+.second-place {
+    background-color: #B4B4B4;
+    color: black;
+    text-shadow: 1px 1px 2px white;
+}
+
+.third-place {
+    background-color: #8a5118; /* Bronze color */
+    color: black;
+    text-shadow: 1px 1px 2px white;
 }
 
 .rank {
@@ -106,14 +138,21 @@ h3 {
 }
 
 .crown {
-    width: 20px;
-    height: 20px;
+    width: 32px;
+    height: 32px;
     margin-right: 10px;
+    }
+
+.position-change-icon {
+    width: 20px; /* Set width to 20px */
+    height: 20px; /* Set height to 20px */
+    margin-left: 5px;
 }
 
 .name {
     flex: 1;
     text-align: center;
+    word-break: break-word; /* Allow long names to break into multiple lines */
 }
 
 .score {

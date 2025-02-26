@@ -28,6 +28,19 @@
         let previousPositions = {};
         let currentPositions = {};
 
+        const previousPositionsKey = 'previousPositions';
+
+        function savePreviousPositions() {
+            localStorage.setItem(previousPositionsKey, JSON.stringify(previousPositions));
+        }
+
+        function loadPreviousPositions() {
+            const savedPositions = localStorage.getItem(previousPositionsKey);
+            if (savedPositions) {
+                previousPositions = JSON.parse(savedPositions);
+            }
+        }
+
         async function fetchPlayers() {
             try {
                 const querySnapshot = await getDocs(collection(db, "Player"));
@@ -100,7 +113,11 @@
 
             // Update previous positions after the leaderboard is updated
             previousPositions = { ...currentPositions };
+            savePreviousPositions();
         }
+
+        // Load previous positions from localStorage
+        loadPreviousPositions();
 
         // Initial leaderboard update
         fetchPlayers();

@@ -4,6 +4,9 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden; /* Prevent scrollbars from appearing */
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Ensure the body takes the full viewport height */
 }
 
 canvas {
@@ -16,7 +19,7 @@ canvas {
 }
 
 .container {
-    width: 80%;
+    width: 100%; /* Take up the full width */
     margin: 0 auto;
     padding: 20px;
     background-color: #fff;
@@ -46,12 +49,12 @@ h3 {
 }
 
 #leaderboard {
-    max-width: 600px;
-    margin: 20px auto;
+    max-width: 100%; /* Take up the full width */
+    margin: 0 16px; /* Add margin to the left and right */
     border-radius: 5px;
     padding: 20px;
     overflow-y: scroll; /* Enable vertical scrolling */
-    max-height: calc(100vh - 100px); /* Limit the height to full viewport height minus some space for header */
+    flex: 1; /* Allow the leaderboard to take up remaining space */
     -ms-overflow-style: none;  /* Internet Explorer 10+ */
     scrollbar-width: none;  /* Firefox */
 }
@@ -67,6 +70,8 @@ h3 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%; /* Ensure the player list takes up the full width */
+    max-height: none; /* Allow the player list to grow beyond 239px */
 }
 
 .leaderboard table {
@@ -96,6 +101,8 @@ h3 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%; /* Ensure the player list takes up the full width */
+    max-height: none; /* Allow the player list to grow beyond 239px */
 }
 
 #leaderboard-list {
@@ -112,8 +119,7 @@ h3 {
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 5px;
-    width: 100%;
-    max-width: 500px;
+    width: 100%; /* Ensure the items take up the full width */
     box-sizing: border-box;
 }
 
@@ -126,7 +132,7 @@ h3 {
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 5px;
-    width: 100%;
+    width: calc(100% - 40px); /* Ensure the items take up the full width with margins */
     box-sizing: border-box;
 }
 
@@ -337,6 +343,7 @@ h3 {
     .leaderboard-item, .player-item {
         flex-direction: row; /* Ensure horizontal layout */
         align-items: center;
+        width: 100%;
     }
 
     .name, .score {

@@ -31,14 +31,22 @@
         async function fetchPlayers() {
             try {
                 const querySnapshot = await getDocs(collection(db, "Player"));
-                players = querySnapshot.docs.map(doc => ({
+                const newPlayers = querySnapshot.docs.map(doc => ({
                     id: doc.id,
                     name: doc.data().Name,
-                    score: doc.data().Score || 0,
-                    changed: doc.data().Changed || false
+                    score: doc.data().Score || 0
                 }));
-                console.log("Players fetched from Firestore:", players);
-                if (players.some(player => player.changed) || Object.keys(currentPositions).length === 0) {
+
+                // Check if there are any changes
+                const hasChanges = newPlayers.length !== players.length ||
+                    newPlayers.some((newPlayer, index) => {
+                        const oldPlayer = players.find(p => p.id === newPlayer.id);
+                        return !oldPlayer || newPlayer.score !== oldPlayer.score;
+                    });
+
+                if (hasChanges) {
+                    players = newPlayers;
+                    console.log("Players fetched from Firestore:", players);
                     updateLeaderboard();
                 }
             } catch (error) {
@@ -65,10 +73,10 @@
                 }
 
                 let positionChangeIcon = '';
-                if (currentPositions[player.id] !== undefined) {
-                    if (currentPositions[player.id] > index) {
+                if (previousPositions[player.id] !== undefined) {
+                    if (previousPositions[player.id] > index) {
                         positionChangeIcon = '<img src="images/up-arrow.png" alt="Up" class="position-change-icon">';
-                    } else if (currentPositions[player.id] < index) {
+                    } else if (previousPositions[player.id] < index) {
                         positionChangeIcon = '<img src="images/down-arrow.png" alt="Down" class="position-change-icon">';
                     } else {
                         positionChangeIcon = '<img src="images/neutral-icon.png" alt="Neutral" class="position-change-icon">';
@@ -89,11 +97,6 @@
                 // Update previous positions
                 previousPositions[player.id] = currentPositions[player.id];
                 currentPositions[player.id] = index;
-
-                // Reset the Changed field to false
-                if (player.changed) {
-                    updateDoc(doc(db, "Player", player.id), { Changed: false });
-                }
             });
         }
 

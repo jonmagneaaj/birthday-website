@@ -94,10 +94,12 @@
                 `;
                 leaderboardList.appendChild(listItem);
 
-                // Update previous positions
-                previousPositions[player.id] = currentPositions[player.id];
+                // Update current positions
                 currentPositions[player.id] = index;
             });
+
+            // Update previous positions after the leaderboard is updated
+            previousPositions = { ...currentPositions };
         }
 
         // Initial leaderboard update
@@ -108,7 +110,7 @@
     </script>
 </head>
 <body>
-    <h1>Leaderboard</h1>
+    <h1>Ledertavle</h1>
     <div id="leaderboard">
         <ul id="playerLeaderboard"></ul>
     </div>

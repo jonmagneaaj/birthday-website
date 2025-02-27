@@ -12,6 +12,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh; /* Ensure the body takes the full viewport height */
+    width: 100%;
 }
 
 canvas {
@@ -64,8 +65,7 @@ h3 {
 }
 
 .leaderboard {
-    max-width: 600px;
-    margin: 20px auto;
+    max-width: 100%; /* Take up the full width */
     border-radius: 5px;
     margin-top: 20px;
 }
@@ -150,7 +150,6 @@ h3 {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    margin: 10px 0;
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -356,33 +355,3 @@ h3 {
     background-color: darkred;
 }
 
-@media (max-width: 600px) {
-    .container {
-        width: 100%;
-        padding: 10px;
-    }
-
-    .leaderboard-item, .player-item {
-        flex-direction: row; /* Ensure horizontal layout */
-        align-items: center;
-        width: 100%;
-    }
-
-    .name, .score {
-        text-align: center;
-    }
-
-    input[type="text"], input[type="number"] {
-        width: 100%;
-        padding: 15px;
-        margin: 5px 0;
-        box-sizing: border-box;
-        font-size: 16px;
-    }
-
-    button {
-        width: 100%;
-        padding: 15px;
-        font-size: 16px;
-    }
-}

@@ -167,7 +167,7 @@
                         particles.push({
                             x: Math.random()*canvas.width, //0 and width
                             y: 0,
-                            speed: 2+Math.random()*3,//2-5
+                            speed: 1+Math.random()*1.5,//1-2.5, slower speed
                             radius: 5,// Fixed radius to ensure round particles
                             color: 'rgb(' + randVal1 + ',' + randVal2 + ',' + randVal3 + ')',
                         });
@@ -194,6 +194,8 @@
             function drawParticles() {
                 var c = canvas.getContext('2d');
                 c.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+                c.fillStyle = 'purple'; // Set background color to purple
+                c.fillRect(0, 0, canvas.width, canvas.height); // Fill the background
                 for ( var i in particles ) {
                     var part = particles[i];
                     c.beginPath();
@@ -208,9 +210,12 @@
 </head>
 <body>
     <canvas id="canvas"></canvas>
-    <h1>Ledertavle</h1>
-    <div id="leaderboard">
-        <ul id="playerLeaderboard"></ul>
+    <div class="blur-overlay"></div>
+    <div class="content">
+        <h1>Ledertavle</h1>
+        <div id="leaderboard">
+            <ul id="playerLeaderboard"></ul>
+        </div>
     </div>
 </body>
 </html>

@@ -74,7 +74,6 @@ h3 {
     max-width: 100%; /* Take up the full width */
     margin: 0 16px; /* Add margin to the left and right */
     border-radius: 5px;
-    padding: 20px;
     overflow-y: auto; /* Enable vertical scrolling */
     flex: 1; /* Allow the leaderboard to take up remaining space */
     -ms-overflow-style: none;  /* Internet Explorer 10+ */

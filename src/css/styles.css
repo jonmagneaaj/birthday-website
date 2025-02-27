@@ -38,7 +38,6 @@ canvas {
     z-index: 1; /* Ensure the content is above the blur overlay */
     width: 100%; /* Take up the full width */
     margin: 0 auto;
-    padding: 20px;
     background-color: rgba(43, 41, 41, 0.22); /* Semi-transparent background */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     overflow-y: auto; /* Enable vertical scrolling */
@@ -68,7 +67,6 @@ h3 {
     max-width: 600px;
     margin: 20px auto;
     border-radius: 5px;
-    padding: 20px;
     margin-top: 20px;
 }
 
